@@ -79,6 +79,7 @@ ExternalProject_Add(
 
 link_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
 include_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
+add_dependencies(${PROJECT_NAME} sfml)
 
 target_link_libraries(
     ${PROJECT_NAME}
