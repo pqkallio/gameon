@@ -77,6 +77,9 @@ ExternalProject_Add(
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/sfml
 )
 
+link_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
+include_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
+
 target_link_libraries(
     ${PROJECT_NAME}
     sfml-system
