@@ -6,6 +6,21 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(ExternalProject)
+include(GNUInstallDirs)
+enable_testing()
+
+link_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_LIBDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
+include_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
+
+# Add SFML
+ExternalProject_Add(
+    sfml
+    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
+    GIT_TAG "2.5.1"
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/sfml
+)
+
 file(GLOB gameon_src
     RELATIVE ${PROJECT_SOURCE_DIR}
     "src/main.cpp"
@@ -15,25 +30,22 @@ file(GLOB gameon_src
 set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-* -warnings-as-errors=-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-*,fuchsia-*)
 
 # Executable name to be built
-add_executable(gameon ${gameon_src})
+add_executable(${PROJECT_NAME} ${gameon_src})
 
-target_link_libraries(gameon sfml-window sfml-system)
+target_link_libraries(
+    ${PROJECT_NAME}
+    sfml-system
+    sfml-window
+)
 
 # Compiler options per platform
 if(MSVC)
-    target_compile_options(gameon PRIVATE /W4 -O2)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 -O2)
 else()
-    target_compile_options(gameon PRIVATE -Wall -Wextra -Wpedantic -O2)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -O2)
 endif()
 
 unset(CMAKE_CXX_CLANG_TIDY)
-include(GNUInstallDirs)
-
-# Enable downloading external projects during build
-include(ExternalProject)
-
-# Enable running ctest
-enable_testing()
 
 ExternalProject_Add(
     googletest
@@ -42,10 +54,8 @@ ExternalProject_Add(
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/googletest
 )
 
-link_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_LIBDIR})
-include_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_INCLUDEDIR})
+set_target_properties(googletest PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-# Required for googletest
 find_package(Threads REQUIRED)
 
 # Use all .cpp files in the test folder
@@ -65,24 +75,3 @@ add_test(${PROJECT_TESTER_NAME} ${PROJECT_TESTER_NAME})
 add_custom_target(tester
     COMMAND ${PROJECT_TESTER_NAME} || true # suppress verbose errors
     DEPENDS ${PROJECT_TESTER_NAME})
-
-# Exclude googletest building from target "all"
-set_target_properties(googletest PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
-# Add SFML
-ExternalProject_Add(
-    sfml
-    GIT_REPOSITORY "https://github.com/SFML/SFML.git"
-    GIT_TAG "2.5.1"
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/sfml
-)
-
-link_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
-include_directories(${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
-add_dependencies(${PROJECT_NAME} sfml)
-
-target_link_libraries(
-    ${PROJECT_NAME}
-    sfml-system
-    sfml-window
-)
