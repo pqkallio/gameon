@@ -31,6 +31,7 @@ set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,clang-analyzer-*,google-*,hicpp-*
 
 # Executable name to be built
 add_executable(${PROJECT_NAME} ${gameon_src})
+add_dependencies(${PROJECT_NAME} sfml)
 
 target_link_libraries(
     ${PROJECT_NAME}
