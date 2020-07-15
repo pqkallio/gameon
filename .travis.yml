@@ -1,0 +1,22 @@
+language: cpp
+
+os: linux
+
+before_install:
+  - sudo apt-get -y install libfreetype6-dev libx11-dev libxrandr-dev libgl1-mesa-dev libudev-dev libopenal-dev libflac-dev libogg-dev libvorbis-dev
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+    update: true
+
+script:
+  - export CC=gcc-7
+  - export CXX=g++-7
+  - mkdir build && cd build
+  - cmake ..
+  - make tester && ./gameon_test
+  - make
