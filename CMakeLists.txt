@@ -10,9 +10,6 @@ include(ExternalProject)
 include(GNUInstallDirs)
 enable_testing()
 
-link_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_LIBDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
-include_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
-
 # Add SFML
 ExternalProject_Add(
     sfml
@@ -20,6 +17,9 @@ ExternalProject_Add(
     GIT_TAG "2.5.1"
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/sfml
 )
+
+link_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_LIBDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_LIBDIR})
+include_directories(${CMAKE_BINARY_DIR}/googletest/${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_BINARY_DIR}/sfml/${CMAKE_INSTALL_INCLUDEDIR})
 
 file(GLOB gameon_src
     RELATIVE ${PROJECT_SOURCE_DIR}
