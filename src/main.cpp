@@ -4,6 +4,7 @@
 #include <thread>
 #include <chrono>
 #include "game/game.hpp"
+#include "game/tilemap.hpp"
 
 int main()
 {
@@ -17,6 +18,10 @@ int main()
   sf::RenderWindow window(sf::VideoMode(800, 600), "Game on");
 
   Game game;
+
+  if (game.getErrored()) {
+    return -1;
+  }
 
   while (window.isOpen()) {
     elapsed = clock.restart();
@@ -33,6 +38,10 @@ int main()
     if (renderElapsed >= renderThreshold) {
       game.update(renderElapsed);
       renderElapsed %= renderThreshold;
+
+      window.clear();
+      window.draw(game.getDrawable());
+      window.display();
     }
 
     elapsed %= waitThreshold;

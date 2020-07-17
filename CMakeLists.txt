@@ -27,7 +27,7 @@ file(GLOB gameon_src
     "src/game/*.cpp"
 )
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-* -warnings-as-errors=-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-*,fuchsia-*)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,clang-analyzer-*,google-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-* -warnings-as-errors=-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,readability-*,readability-magic-numbers,cert-*,bugprone-*,misc-*,fuchsia-*)
 
 # Executable name to be built
 add_executable(${PROJECT_NAME} ${gameon_src})
@@ -77,3 +77,5 @@ add_test(${PROJECT_TESTER_NAME} ${PROJECT_TESTER_NAME})
 add_custom_target(tester
     COMMAND ${PROJECT_TESTER_NAME} || true # suppress verbose errors
     DEPENDS ${PROJECT_TESTER_NAME})
+
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
