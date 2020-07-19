@@ -3,7 +3,9 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <vector>
 #include "tilemap.hpp"
+#include "sprite.hpp"
 
 const int LEVEL[] = {
   0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -21,12 +23,14 @@ public:
   Game();
   void update(sf::Time);
   void handleEvent(sf::Event);
-  TileMap getDrawable();
+  TileMap* getTileMap();
+  std::vector<Sprite*> getSprites();
   bool getErrored();
 
 private:
   TileMap map;
   bool errored;
+  std::vector<Sprite*> sprites;
 };
 
 #endif /* _gameon_game_hpp */

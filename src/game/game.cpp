@@ -4,6 +4,7 @@
 Game::Game()
 {
   this->map = TileMap();
+  this->sprites = {};
 
   if (!this->map.load("assets/images/tileset.png", sf::Vector2u(32, 32), LEVEL, 16, 8)) {
     this->errored = true;
@@ -11,9 +12,14 @@ Game::Game()
   }
 }
 
-TileMap Game::getDrawable()
+std::vector<Sprite*> Game::getSprites()
 {
-   return this->map;
+  return this->sprites;
+}
+
+TileMap* Game::getTileMap()
+{
+   return &this->map;
 }
 
 bool Game::getErrored()
