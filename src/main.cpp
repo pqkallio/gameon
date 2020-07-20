@@ -40,7 +40,12 @@ int main()
       renderElapsed %= renderThreshold;
 
       window.clear();
-      window.draw(game.getDrawable());
+      window.draw(*game.getTileMap());
+
+      for (Sprite* sprite : game.getSprites()) {
+        window.draw(*sprite->getSfSprite());
+      }
+
       window.display();
     }
 
@@ -48,6 +53,8 @@ int main()
 
     std::this_thread::sleep_for(std::chrono::microseconds((waitThreshold - elapsed).asMicroseconds()));
   }
+
+  game.tearDown();
 
   return 0;
 }
