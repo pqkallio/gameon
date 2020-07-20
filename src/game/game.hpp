@@ -26,6 +26,7 @@ public:
   TileMap* getTileMap();
   std::vector<Sprite*> getSprites();
   bool getErrored();
+  void tearDown();
 
 private:
   TileMap map;

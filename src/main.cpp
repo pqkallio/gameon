@@ -54,5 +54,7 @@ int main()
     std::this_thread::sleep_for(std::chrono::microseconds((waitThreshold - elapsed).asMicroseconds()));
   }
 
+  game.tearDown();
+
   return 0;
 }
