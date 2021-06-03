@@ -42,8 +42,8 @@ int main()
       window.clear();
       window.draw(*game.getTileMap());
 
-      for (Sprite* sprite : game.getSprites()) {
-        window.draw(*sprite->getSfSprite());
+      for (Entity* sprite : game.getEntities()) {
+        window.draw(*sprite->getSprite());
       }
 
       window.display();

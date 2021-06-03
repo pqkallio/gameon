@@ -1,21 +1,22 @@
-#ifndef _gameon_game_sprite
-#define _gameon_game_sprite
+#ifndef _gameon_game_entity
+#define _gameon_game_entity
 
 #include <SFML/Graphics.hpp>
 #include <string>
 
-class Sprite {
+class Entity {
 public:
-  Sprite(
-    std::string* filename,
+  Entity(
+    std::string* spriteFilename,
     size_t frames,
     size_t height,
     size_t width,
     float x = 0.0f,
     float y = 0.0f
   );
-  sf::Sprite* getSfSprite();
+  sf::Sprite* getSprite();
   bool getErrored();
+  sf::Vector2f getPosition();
 
 private:
   sf::Sprite sprite;
@@ -25,6 +26,7 @@ private:
   const size_t height;
   const size_t width;
   bool errored;
+  sf::Vector2f position;
 };
 
-#endif /* _gameon_game_sprite */
+#endif /* _gameon_game_entity */
